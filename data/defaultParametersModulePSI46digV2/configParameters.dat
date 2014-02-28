@@ -15,7 +15,7 @@ rootFileName pxar.root
 nModules 1
 nRocs 16
 nTbms 1
-hubId 31
+hubId 0
 tbmEnable 1
 tbmEmulator 0
 hvOn 1
@@ -27,8 +27,8 @@ halfModule 0
 
 -- voltages and current limits
 
-ia 1.190
-id 1.100
-va 1.900
-vd 2.600
+ia 0.800
+id 0.800
+va 1.600
+vd 2.500
 

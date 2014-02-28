@@ -8,6 +8,7 @@ namespace pxar {
     pos = 0;
     do {
       dtbState = tb->Daq_Read(buffer, DTB_SOURCE_BLOCK_SIZE, dtbRemainingSize, channel);
+      LOG(logDEBUGPIPES) << "Remaining: " << dtbRemainingSize;
       /*
 	if (dtbRemainingSize < 100000) {
 	if      (dtbRemainingSize > 1000) tb->mDelay(  1);

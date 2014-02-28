@@ -350,7 +350,8 @@ bool hal::FindDTB(std::string &usbId) {
 
   if (devList.size() == 0) {
     LOG(logCRITICAL) << "No DTB connected.\n";
-    return false;
+    //return false;
+    return true;
   }
 
   if (devList.size() == 1) {
@@ -477,19 +478,19 @@ bool hal::tbmSetRegs(uint8_t tbmId, std::map< uint8_t, uint8_t > regPairs) {
   return true;
 }
 
-bool hal::tbmSetReg(uint8_t /*tbmId*/, uint8_t regId, uint8_t regValue) {
+bool hal::tbmSetReg(uint8_t tbmId, uint8_t regId, uint8_t regValue) {
   // FIXME currently only one TBM supported...
 
   // Make sure we are writing to the correct TBM by setting its sddress:
   // FIXME Magic from Beat, need to understand this and be able to program also the second TBM:
-  _testboard->mod_Addr(31);
+  _testboard->mod_Addr(0);
 
   LOG(logDEBUGHAL) << "Set Reg" << std::hex << static_cast<int>(regId) << std::dec << " to " << std::hex << static_cast<int>(regValue) << std::dec << " for both TBM cores.";
   // Set this register for both TBM cores:
   uint8_t regCore1 = 0xE0 | regId;
   uint8_t regCore2 = 0xF0 | regId;
-  LOG(logDEBUGHAL) << "Core 1: register " << std::hex << static_cast<int>(regCore1) << " = " << static_cast<int>(regValue) << std::dec;
-  LOG(logDEBUGHAL) << "Core 2: register " << std::hex << static_cast<int>(regCore2) << " = " << static_cast<int>(regValue) << std::dec;
+  LOG(logDEBUGHAL) << "Core " << tbmId << " : register " << std::hex << static_cast<int>(regCore1) << " = " << static_cast<int>(regValue) << std::dec;
+//  LOG(logDEBUGHAL) << "Core 2: register " << std::hex << static_cast<int>(regCore2) << " = " << static_cast<int>(regValue) << std::dec;
 
   _testboard->tbm_Set(regCore1,regValue);
   _testboard->tbm_Set(regCore2,regValue);
@@ -595,6 +596,61 @@ std::vector<Event*> hal::MultiRocAllPixelsCalibrate(std::vector<uint8_t> rocids,
 
   // Call the RPC command containing the trigger loop:
   _testboard->LoopMultiRocAllPixelsCalibrate(rocids, nTriggers, flags);
+ /* 
+//---------
+     // Clear the calibrate signal on every ROC configured
+      for(size_t roc = 0; roc < rocids.size(); roc++) {
+            _testboard->roc_I2cAddr(rocids.at(roc));
+            _testboard->roc_ClrCal();
+      }
+
+ // Loop over all columns:
+  for (uint8_t col = 24; col < 28; col++) {
+
+    // Enable this column on every configured ROC:
+    for(size_t roc = 0; roc < rocids.size(); roc++) {
+      _testboard->roc_I2cAddr(rocids.at(roc));
+      _testboard->roc_Col_Enable(col, true);
+    }
+
+    // Loop over all rows:
+    for (uint8_t row = 30; row < 40; row++) {
+
+      // Set the calibrate bits on every configured ROC
+      // Take into account both Xtalks and Cals flags
+      //for(size_t roc = 0; roc < rocids.size(); roc++) {
+      for(size_t roc = 9; roc < 10; roc++) {
+        _testboard->roc_I2cAddr(rocids.at(roc));
+	    _testboard->roc_Pix_Cal(col, row, false);
+      }
+
+      // Send the triggers:
+      mDelay(15);
+     // for (uint16_t trig = 0; trig < nTriggers; trig++) 
+       {
+	    _testboard->Pg_Single();
+	    // Delay the next trigger, depending in the data traffic we expect:
+	    mDelay(4*rocids.size());
+      }
+
+      // Clear the calibrate signal on every ROC configured
+      for(size_t roc = 0; roc < rocids.size(); roc++) {
+	    _testboard->roc_I2cAddr(rocids.at(roc));
+	    _testboard->roc_ClrCal();
+      }
+    } // Loop over all rows
+
+    // Disable this column on every ROC configured:
+    for(size_t roc = 0; roc < rocids.size(); roc++) {
+      _testboard->roc_I2cAddr(rocids.at(roc));
+      _testboard->roc_Col_Enable(col, false);
+    }
+
+  } // Loop over all columns
+
+*/
+
+//--------
   LOG(logDEBUGHAL) << "Loop finished, " << daqBufferStatus() << " words in buffer, loop took " << t << "ms.";
 
   std::vector<Event*> data = daqAllEvents();

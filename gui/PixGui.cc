@@ -42,7 +42,6 @@ TGMainFrame(p, 1, 1, kVerticalFrame), fWidth(w), fHeight(h) {
   fApi = fPixSetup->getApi();
   fConfigParameters = fPixSetup->getConfigParameters();
   fTestParameters = fPixSetup->getPixTestParameters(); 
-
   fPower = true;
   if (fConfigParameters->getHvOn()) {
     fHV = true; 
@@ -123,7 +122,7 @@ TGMainFrame(p, 1, 1, kVerticalFrame), fWidth(w), fHeight(h) {
   fTimer = new TTimer(1000);
   fTimer->Connect("Timeout()", "PixMonitor", fMonitor, "Update()");
   fTimer->TurnOn();
-    
+
   h1v2->AddFrame(hwControl, new TGLayoutHints(kLHintsLeft, fBorderN, fBorderN, fBorderN, fBorderN));
   h1v1->SetWidth(400);
 
@@ -164,7 +163,6 @@ TGMainFrame(p, 1, 1, kVerticalFrame), fWidth(w), fHeight(h) {
  
   h1v3->AddFrame(rootfileFrame, new TGLayoutHints(kLHintsTop|kLHintsLeft, fBorderN, fBorderN, fBorderN, fBorderN));
 
-
   TGHorizontalFrame *dirFrame = new TGHorizontalFrame(h1v3, 150,75);
   dirFrame->SetName("dirFrame");
 
@@ -193,7 +191,7 @@ TGMainFrame(p, 1, 1, kVerticalFrame), fWidth(w), fHeight(h) {
   
   fH2->AddFrame(fTabs, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, fBorderN, fBorderN, fBorderN, fBorderN));
 
-  fParTab = new PixParTab(this, fConfigParameters, "h/w"); 
+  if(fApi) fParTab = new PixParTab(this, fConfigParameters, "h/w"); 
 
   fcmbTests->AddEntry("Ignore this ...", 0);
   vector<string> tests = fTestParameters->getTests();
@@ -201,8 +199,9 @@ TGMainFrame(p, 1, 1, kVerticalFrame), fWidth(w), fHeight(h) {
     fcmbTests->AddEntry(tests[i].c_str(), i+1);
     createTab(tests[i].c_str()); 
   }
+
   fcmbTests->Select(0);
-  fParTab->updateSelection(); // ensure that fId2Idx for all tests is initialized
+  if(fApi) fParTab->updateSelection(); // ensure that fId2Idx for all tests is initialized
 
   fH1->AddFrame(h1v1, new TGLayoutHints(kLHintsLeft | kLHintsExpandX | kLHintsExpandY, fBorderN, fBorderN, fBorderN, fBorderN));
   fH1->AddFrame(h1v2, new TGLayoutHints(kLHintsCenterX , fBorderN, fBorderN, fBorderN, fBorderN));
@@ -210,7 +209,7 @@ TGMainFrame(p, 1, 1, kVerticalFrame), fWidth(w), fHeight(h) {
 
   AddFrame(fH1, new TGLayoutHints(kLHintsTop | kLHintsExpandX));
   AddFrame(fH2, new TGLayoutHints(kLHintsBottom | kLHintsExpandY | kLHintsExpandX));
- 
+
   MapSubwindows();
   Resize(GetDefaultSize());
   MapWindow();
@@ -243,7 +242,7 @@ void PixGui::Cleanup() {
     gApplication->Terminate(0);
 }
 
-
+/*
 // ----------------------------------------------------------------------
 void PixGui::CloseWindow() {
   std::vector<PixTest*>::iterator il; 
@@ -258,6 +257,29 @@ void PixGui::CloseWindow() {
   gApplication->Terminate(0);
 
 }
+*/
+
+// ----------------------------------------------------------------------
+void PixGui::CloseWindow() {
+cout << "dbx 0" << endl;
+std::vector<PixTest*>::iterator il;
+for (il = fTestList.begin(); il != fTestList.end(); ++il) {
+delete (*il);
+}
+
+cout << "dbx 1" << endl;
+if (fTimer) fTimer->TurnOff();
+cout << "dbx 2" << endl;
+if (fApi) delete fApi;
+
+cout << "dbx 3" << endl;
+//DestroyWindow();
+cout << "dbx 4" << endl;
+gApplication->Terminate(0);
+cout << "dbx 5" << endl;
+
+}
+
 // ----------------------------------------------------------------------
 void PixGui::handleButtons(Int_t id) {
   if (id == -1) {

@@ -1,21 +1,21 @@
-  1       Vdig   8
-  2       Vana 136
-  3        Vsf  40
-  4      Vcomp  12
-  7     VwllPr  60
-  9     VwllSh  60
- 10    VhldDel 117
- 11      Vtrim  29
- 12   VthrComp  50
- 13 VIBias_Bus  30
- 14   Vbias_sf   6
- 15  VoffsetOp  60
- 17  VOffsetRO 150
- 18       VIon  45
- 19  Vcomp_ADC  50
- 20  VIref_ADC  70
- 22    VIColOr  99
- 25       Vcal 200
- 26     CalDel  68
-253    CtrlReg   4
-254        WBC 100
+0       vdig   8
+0       vana 128
+0        vsh  40
+0      vcomp  15
+0     vwllpr  60
+0     vwllsh  60
+0    vhlddel 117
+0      vtrim  29
+0   vthrcomp  61
+0 vibias_bus  30
+0   vbias_sf   6
+0  voffsetop  40
+0   phoffset 255
+0       vion 115
+0  vcomp_adc  50
+0    phscale 255
+0    vicolor  99
+0       vcal  12
+0     caldel 109
+0    ctrlreg   0
+0        wbc 100

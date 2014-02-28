@@ -188,8 +188,11 @@ void runTest(PixTest *b) {
 void runGui(PixSetup &a, int argc, char *argv[]) {
   TApplication theApp("App", &argc, argv);
   theApp.SetReturnFromRun(true);
+  LOG(logINFO) << "app " << gClient->GetRoot();
   PixGui gui(gClient->GetRoot(), 1300, 800, &a);
+  LOG(logINFO) << "app";
   theApp.Run();
+  LOG(logINFO) << "app";
   LOG(logINFO) << "closing down 0 ";
 }
 

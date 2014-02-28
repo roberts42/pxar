@@ -195,6 +195,7 @@ void PixTestDacScan::doTest() {
 	  h = (TH1D*)fDirectory->Get(Form("NhitsVs%s_c%d_r%d_C%d", fParDAC.c_str(), vpix[ipix].column, vpix[ipix].row, ichip));
 	  if (h) {
 	    h->SetBinContent(idac+1, vpix[ipix].value); 
+		cout << vpix[ipix];
 	  } else {
 	    LOG(logDEBUG) << "XX did not find " << Form("NhitsVs%s_c%d_r%d_C%d", fParDAC.c_str(), vpix[ipix].column, vpix[ipix].row, ichip);
 	  }

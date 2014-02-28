@@ -59,6 +59,7 @@ bool PixTestParameters::readTestParameterFile(string file, bool verbose) {
 	testName = line.substr(m1+1); 
 	testName.erase (std::remove(testName.begin(), testName.end(), ' '), testName.end());
       }
+
       while (is.good())  {
 	getline(is, line);
 	if (string::npos != line.find("--")) {
@@ -86,7 +87,6 @@ bool PixTestParameters::readTestParameterFile(string file, bool verbose) {
     fTests.insert(make_pair(testName, testparameters));
     testparameters.clear();
   }
-
   if (verbose) dump();
 
   return true;

@@ -17,7 +17,7 @@ ClassImp(PixTest)
 
 // ----------------------------------------------------------------------
 PixTest::PixTest(PixSetup *a, string name) {
-  //  LOG(logINFO) << "PixTest ctor(PixSetup, string)";
+    LOG(logINFO) << "PixTest ctor(PixSetup, string)";
   fPIF            = new PixInitFunc(); 
   fPixSetup       = a;
   fApi            = a->getApi(); 
